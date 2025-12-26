@@ -8,7 +8,7 @@ This package provides an efficient structure for simultaneously down-converting 
 
 ## Features
 
--   **Arbitrary Center Frequencies**: Channels can be placed anywhere in the Nyquist zone, they do not need to be aligned with the standard DFT bin centers ($k \cdot f_s/M$).
+-   **Arbitrary Center Frequencies**: Channels can be placed anywhere in the Nyquist zone, they do not need to be aligned with the standard DFT bin centers ($k \cdot f_{\mathrm{s}}/M$).
 -   **Polyphase Efficiency**: Uses an $M$-path polyphase filter bank for computational efficiency.
 -   **Baseband Correction**: Automatically applies complex frequency rotation to shift the aliased outputs to true DC (0 Hz) baseband.
 -   **Configurable**: Supports adjustable number of polyphase branches ($M$), channel bandwidth, and filter tap length.
