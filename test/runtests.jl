@@ -1,6 +1,5 @@
 using FreqChannelizer
 using Test
-using FFTW
 
 @testset "FreqChannelizer.jl" begin
     @testset "Signal Reconstruction" begin

@@ -1,6 +1,5 @@
 module FreqChannelizer
 
-using FFTW
 using DSP
 
 export ArbitraryFrequencyChannelizer, channelize, create_channel_filters, design_prototype_filter, generate_multitone_signal

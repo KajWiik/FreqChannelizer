@@ -5,10 +5,8 @@ authors = ["Kaj Wiik <kaj.wiik@utu.fi>"]
 
 [deps]
 DSP = "717857b8-e6f2-59f4-9121-6e50c889abd2"
-FFTW = "7a1cc6ca-52ef-59f5-83cd-3a7055c09341"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
 DSP = "0.8.4"
-FFTW = "1.10.0"
 Test = "1.11.0"

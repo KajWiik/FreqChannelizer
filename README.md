@@ -12,6 +12,7 @@ This package provides an efficient structure for simultaneously down-converting 
 -   **Polyphase Efficiency**: Uses an $M$-path polyphase filter bank for computational efficiency.
 -   **Baseband Correction**: Automatically applies complex frequency rotation to shift the aliased outputs to true DC (0 Hz) baseband.
 -   **Configurable**: Supports adjustable number of polyphase branches ($M$), channel bandwidth, and filter tap length.
+-   **Lightweight**: Only depends on `DSP.jl`.
 
 ## Installation
 
@@ -64,7 +65,6 @@ The implementation follows these key steps:
 ## Dependencies
 
 -   **DSP.jl**: For filter window generation.
--   **FFTW.jl**: (Currently included but primarily for potential future FFT-based optimizations or analysis).
 
 ## License
 
