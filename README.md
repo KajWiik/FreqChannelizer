@@ -1,6 +1,6 @@
 # FreqChannelizer.jl
 
-A Julia package implementing an Arbitrary Frequency Polyphase Channelizer, based on the method described by Fred Harris in *"Polyphase analysis filter bank down-converts unequal channel bandwidths with arbitrary center frequencies"*.
+A Julia package implementing an Arbitrary Frequency Polyphase Channelizer, based on the method described by Fred Harris in [*"Polyphase analysis filter bank down-converts unequal channel bandwidths with arbitrary center frequencies"*](https://www.researchgate.net/publication/257514234_Polyphase_analysis_filter_bank_down-converts_unequal_channel_bandwidths_with_arbitrary_center_frequencies).
 
 ## Overview
 
