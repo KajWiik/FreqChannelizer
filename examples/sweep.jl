@@ -43,7 +43,8 @@ for i in 1:num_channels
 end
 
 # Colors for channels
-colors = Makie.wong_colors()[1:num_channels]
+all_colors = Makie.wong_colors()
+colors = [all_colors[mod1(i, length(all_colors))] for i in 1:num_channels]
 
 # Observables for animation
 obs_input_freqs = Observable(collect(range(0, 4, length=1024)))
