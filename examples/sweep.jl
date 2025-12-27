@@ -58,11 +58,15 @@ lines!(ax_main, obs_input_freqs, obs_input_mag, color = :black, linewidth = 1.0,
 # Plot channel filter responses
 # Compute prototype filter response once
 taps_per_branch = length(channelizer.polyphase_filters[1][1])
-L_proto = taps_per_branch * M
-h_proto = FreqChannelizer.design_prototype_filter(channel_bw, L_proto, fs)
-H_f = fftshift(fft(h_proto, 4096))
+L_proto = taps_per_branch * channelizer.M
+h_proto = design_prototype_filter(channelizer.channel_bw, L_proto, channelizer.fs)
+# Pad to 4096 for frequency response plot
+n_fft = 4096
+h_padded = zeros(ComplexF64, n_fft)
+h_padded[1:min(length(h_proto), n_fft)] .= h_proto[1:min(length(h_proto), n_fft)]
+H_f = fftshift(fft(h_padded))
 H_mag = 20log10.(abs.(H_f) ./ maximum(abs.(H_f)) .+ 1e-12)
-f_rel = range(-fs/2, fs/2, length=4096)
+f_rel = range(-fs/2, fs/2, length=n_fft)
 
 for i in 1:num_channels
     # Shifted prototype response for Visualization
