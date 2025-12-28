@@ -63,35 +63,15 @@ The implementation follows these key steps:
 5.  **Frequency Derotation**: The decimated output, which is aliased to baseband, is multiplied by a complex exponential $e^{-j 2\pi f_{\mathrm{offset}} n}$ to shift the signal center perfectly to DC.
 
 ## Example
-[`sweep.jl`]((examples/sweep.jl) is a demonstration and validation script for the `FreqChannelizer` package. It simulates a real-time wideband digital down-conversion (DDC) environment and visualizes the results.
+[`sweep.jl`](examples/sweep.jl) is a demonstration and validation script for the `FreqChannelizer` package. It simulates a real-time wideband digital down-conversion (DDC) environment and visualizes the results.
 
 ### Features
 * Creates a high-speed frequency sweep (chirp) from **0 to 4 GHz** at an **8 GS/s** sampling rate.
-* Configures a polyphase channelizer with **8 randomly placed center frequencies**, demonstrating the ability to extract non-uniformly spaced channels.
+* Configures a polyphase channelizer with **8 randomly placed 128 MHz bands**, demonstrating the ability to extract non-uniformly spaced channels.
 
 The script displays an animation of
     *   **Wideband Spectrum**: The input signal moving through the passbands of the fixed channel filters.
     *   **Channel Grid**: Individual subplots showing each channel's output, verifying that signals are correctly shifted to baseband (DC) as the sweep passes through their frequency range.
-
-
-
-
-
-
-
-
-
-is a demonstration and validation script for tis a demonstrati package. it simulates a real-time wideband digital down-conversion (DDC) environment and visualizes the results.
-### Core Features
-*   **Signal Generation**: Creates a high-speed frequency sweep (chirp) from **0 to 4 GHz** at an **8 GS/s** sampling rate.
-*   **Arbitrary Channelization**: Configures a polyphase channelizer with **8 randomly placed center frequencies**, demonstrating the ability to extract non-uniformly spaced channels.
-*   **Real-Time Processing**: Simulates streaming data by processing the signal in **1-microsecond chunks**, which are passed through the channelizer to produce baseband outputs.
-*   **Dynamic Visualization**: Generates an animated dashboard (saved as `sweep.gif`) using `CairoMakie` that displays:
-    *   **Wideband Spectrum**: The input signal moving through the passbands of the fixed channel filters.
-    *   **Channel Grid**: Individual subplots showing each channel's output, verifying that signals are correctly shifted to baseband (DC) as the sweep passes through their frequency range.
-### Purpose
-The script serves as a proof-of-concept for the **Fred Harris polyphase structure**, showing that it can efficiently handle unequal channel bandwidths and arbitrary center frequencies in high-performance DSP applications.
-Here is a realistic example of a channelizer with eight 128 MHz channels. The script is in [examples/](/examples).
 
 ![](/examples/sweep.gif)
 
