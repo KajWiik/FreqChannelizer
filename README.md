@@ -62,6 +62,9 @@ The implementation follows these key steps:
 4.  **Channelization**: The input signal is fed into a commutator (distributing samples to branches with appropriate delays) and convolved with the polyphase filters.
 5.  **Frequency Derotation**: The decimated output, which is aliased to baseband, is multiplied by a complex exponential $e^{-j 2\pi f_{\mathrm{offset}} n}$ to shift the signal center perfectly to DC.
 
+## Examples
+![](examples/sweep.mp4)
+
 ## Dependencies
 
 -   **DSP.jl**: For filter window generation.
