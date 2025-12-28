@@ -6,7 +6,7 @@ using Random
 
 # Parameters
 fs = 8.0e9             # 8 GS/s sampling rate
-duration = 100.0e-6    # 100 microseconds total simulation time
+duration = 200.0e-6    # 200 microseconds total simulation time (doubled)
 chunk_duration = 1.0e-6 # 1 microsecond per animation frame
 f_start = 0.0          # Sweep start frequency
 f_end = 4.0e9          # Sweep end frequency
@@ -22,12 +22,20 @@ println("Initializing Channelizer...")
 channelizer = ArbitraryFrequencyChannelizer(center_freqs, fs, channel_bw, M)
 
 # Visualization Setup
-fig = Figure(size = (1400, 1200), backgroundcolor = :white)
+#fig = Figure(size = (1400, 1200), backgroundcolor = :white)
+fig = Figure(size = (1024, 768), backgroundcolor = :white)
+#fig = Figure(backgroundcolor = :white)
 ax_main = Axis(fig[1, 1:4], 
     title = "Input Spectrum and Channel Filter Responses (8 GS/s)",
+#    titlesize = 24,
     xlabel = "Frequency (GHz)", 
+#    xlabelsize = 20,
     ylabel = "Magnitude (dB)",
-    limits = (-0.1, 4.1, -100, 10))
+#    ylabelsize = 20,
+#    xticklabelsize = 16,
+#    yticklabelsize = 16,
+#    limits = (-0.1, 4.1, -100, 10))
+    limits = (-0.1, 4.1, -40, 10))
 
 # Subplots for channel outputs (4x4 grid requested)
 axs_channels = Axis[]
@@ -36,9 +44,14 @@ for i in 1:num_channels
     col = (i-1) % 4 + 1
     ax = Axis(fig[row, col], 
                 title = "Channel $i ($(round(center_freqs[i]/1e9, digits=3)) GHz)",
+#                titlesize = 18,
                 xlabel = "Rel. Freq (MHz)",
+#                xlabelsize = 16,
                 ylabel = "dB",
-                limits = (-70, 70, -80, 5))
+#                ylabelsize = 16,
+#                xticklabelsize = 12,
+#                yticklabelsize = 12,
+                limits = (-70, 70, -40, 5))
     push!(axs_channels, ax)
 end
 
@@ -53,7 +66,7 @@ obs_ch_freqs = [Observable(collect(range(-64, 64, length=128))) for _ in 1:num_c
 obs_ch_mag = [Observable(zeros(128) .- 80) for _ in 1:num_channels]
 
 # Plot input spectrum
-lines!(ax_main, obs_input_freqs, obs_input_mag, color = :black, linewidth = 1.0, label = "Input Sweep")
+lines!(ax_main, obs_input_freqs, obs_input_mag, color = :black, linewidth = 2.0, label = "Input Sweep")
 
 # Plot channel filter responses
 # Compute prototype filter response once
@@ -74,24 +87,23 @@ for i in 1:num_channels
     lines!(ax_main, h_freq, H_mag, color = (colors[i], 0.7), linewidth = 2)
     
     # Channel subplots
-    lines!(axs_channels[i], obs_ch_freqs[i], obs_ch_mag[i], color = colors[i], linewidth = 1.5)
+    lines!(axs_channels[i], obs_ch_freqs[i], obs_ch_mag[i], color = colors[i], linewidth = 2.0)
 end
 
-axislegend(ax_main, position=:rt, nbanks=2, labelsize=10)
+#axislegend(ax_main, position=:rt, nbanks=2, labelsize=14)
+axislegend(ax_main, position=:rt, nbanks=2)
 
 # Animation logic
-frames = Int(duration / chunk_duration)
+frames = round(Int, duration / chunk_duration)
 t_global = 0.0
 
 println("Starting Animation Recording...")
-record(fig, "sweep.mp4", 1:frames; framerate = 20) do frame_idx
+record(fig, "sweep.gif", 1:frames; framerate = 5) do frame_idx
     global t_global
     
     # Generate chunk of signal (chirp)
-    # f(t) = f_start + (f_end - f_start) * t / duration
-    # phi(t) = f_start*t + 0.5 * (f_end - f_start)/duration * t^2
-    num_samples = Int(chunk_duration * fs)
-    t_chunk = range(t_global, t_global + chunk_duration, length = num_samples)
+    num_samples = round(Int, chunk_duration * fs)
+    t_chunk = t_global .+ (0:num_samples-1) ./ fs
     
     phi = 2π .* (f_start .* t_chunk .+ 0.5 .* (f_end - f_start) / duration .* t_chunk .^ 2)
     chunk = exp.(im .* phi)
@@ -100,7 +112,7 @@ record(fig, "sweep.mp4", 1:frames; framerate = 20) do frame_idx
     output = channelize(channelizer, chunk)
     
     # Update Input Spectrum Plot
-    p = periodogram(chunk, fs = fs)
+    p = periodogram(chunk*10^3, fs = fs)
     obs_input_freqs[] = p.freq ./ 1e9
     obs_input_mag[] = 10log10.(p.power .+ 1e-15)
     
@@ -108,14 +120,22 @@ record(fig, "sweep.mp4", 1:frames; framerate = 20) do frame_idx
     out_fs = fs / M
     for i in 1:num_channels
         ch_p = periodogram(output[i, :], fs = out_fs)
-        obs_ch_freqs[i][] = ch_p.freq ./ 1e6
-        obs_ch_mag[i][] = 10log10.(ch_p.power .+ 1e-15)
+        
+        # Center the spectrum for complex signals
+        f_centered = fftshift(ch_p.freq)
+        f_centered[f_centered .>= out_fs/2] .-= out_fs
+        p_centered = fftshift(ch_p.power)
+        
+        # Sort for Makie lines!
+        idx = sortperm(f_centered)
+        obs_ch_freqs[i][] = f_centered[idx] ./ 1e6
+        obs_ch_mag[i][] = 10log10.(p_centered[idx] .+ 1e-15)
     end
     
-    t_global += chunk_duration
+    t_global += num_samples / fs
     if frame_idx % 20 == 0
         println("Processed frame $frame_idx / $frames")
     end
 end
 
-println("Animation saved to sweep.mp4")
+println("Animation saved to sweep.gif")
