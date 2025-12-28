@@ -22,19 +22,11 @@ println("Initializing Channelizer...")
 channelizer = ArbitraryFrequencyChannelizer(center_freqs, fs, channel_bw, M)
 
 # Visualization Setup
-#fig = Figure(size = (1400, 1200), backgroundcolor = :white)
 fig = Figure(size = (1024, 768), backgroundcolor = :white)
-#fig = Figure(backgroundcolor = :white)
 ax_main = Axis(fig[1, 1:4], 
     title = "Input Spectrum and Channel Filter Responses (8 GS/s)",
-#    titlesize = 24,
     xlabel = "Frequency (GHz)", 
-#    xlabelsize = 20,
     ylabel = "Magnitude (dB)",
-#    ylabelsize = 20,
-#    xticklabelsize = 16,
-#    yticklabelsize = 16,
-#    limits = (-0.1, 4.1, -100, 10))
     limits = (-0.1, 4.1, -40, 10))
 
 # Subplots for channel outputs (4x4 grid requested)
@@ -44,13 +36,8 @@ for i in 1:num_channels
     col = (i-1) % 4 + 1
     ax = Axis(fig[row, col], 
                 title = "Channel $i ($(round(center_freqs[i]/1e9, digits=3)) GHz)",
-#                titlesize = 18,
                 xlabel = "Rel. Freq (MHz)",
-#                xlabelsize = 16,
                 ylabel = "dB",
-#                ylabelsize = 16,
-#                xticklabelsize = 12,
-#                yticklabelsize = 12,
                 limits = (-70, 70, -40, 5))
     push!(axs_channels, ax)
 end
