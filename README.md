@@ -63,7 +63,7 @@ The implementation follows these key steps:
 5.  **Frequency Derotation**: The decimated output, which is aliased to baseband, is multiplied by a complex exponential $e^{-j 2\pi f_{\mathrm{offset}} n}$ to shift the signal center perfectly to DC.
 
 ## Examples
-![](examples/sweep.mp4)
+![](/examples/sweep.mp4)
 
 ## Dependencies
 
