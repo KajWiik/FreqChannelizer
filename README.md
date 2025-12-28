@@ -70,8 +70,8 @@ The implementation follows these key steps:
 * Configures a polyphase channelizer with **8 randomly placed 128 MHz bands**, demonstrating the ability to extract non-uniformly spaced channels.
 
 The script displays an animation of
-    *   **Wideband Spectrum**: The input signal moving through the passbands of the fixed channel filters.
-    *   **Channel Grid**: Individual subplots showing each channel's output, verifying that signals are correctly shifted to baseband (DC) as the sweep passes through their frequency range.
+*   **Wideband Spectrum**: The input signal moving through the passbands of the fixed channel filters.
+*   **Channel Grid**: Individual subplots showing each channel's output, verifying that signals are correctly shifted to baseband (DC) as the sweep passes through their frequency range.
 
 ![](/examples/sweep.gif)
 
