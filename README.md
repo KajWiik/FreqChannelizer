@@ -63,6 +63,9 @@ The implementation follows these key steps:
 5.  **Frequency Derotation**: The decimated output, which is aliased to baseband, is multiplied by a complex exponential $e^{-j 2\pi f_{\mathrm{offset}} n}$ to shift the signal center perfectly to DC.
 
 ## Example
+
+Here is a realistic example of a channelizer with eight 128 MHz channels. The script is in [examples/](/examples).
+
 ![](/examples/sweep.gif)
 
 ## Dependencies
