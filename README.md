@@ -66,12 +66,12 @@ The implementation follows these key steps:
 [`sweep.jl`](examples/sweep.jl) is a demonstration and validation script for the `FreqChannelizer` package. It simulates a real-time wideband digital down-conversion (DDC) environment and visualizes the results.
 
 The example 
-* creates a frequency sweep (chirp) test signal with center frequencies from **0 to 4 GHz** at an **8 GS/s** sampling rate.
-* configures the polyphase channelizer with **8 randomly placed 128 MHz bands**, demonstrating the ability to extract non-uniformly spaced channels.
+* creates finite bandwidth chirp test signals with center frequencies from 0 to 4 GHz at 8 GS/s.
+* configures the polyphase channelizer with 8 randomly placed 128 MHz bands, demonstrating the ability to extract non-uniformly spaced channels.
 
 The script displays an animation of
-*   **Wideband Spectrum**: The input signal moving through the passbands of the fixed channel filters.
-*   **Channel Grid**: Individual subplots showing each channel's output, verifying that signals are correctly shifted to baseband (DC) as the sweep passes through their frequency range.
+*   Wideband Spectrum: The input signal moving through the passbands of the fixed channel filters.
+*   Channel Grid: Individual subplots showing each channel's output, verifying that signals are correctly shifted to baseband (DC) as the sweep passes through their frequency range.
 
 ![](/examples/sweep.gif)
 
